@@ -32,8 +32,36 @@ function newMove(e){
     e.target.removeEventListener("click", newMove);
     selected[index] = player;
 
+    setTimeout(() => {
+        check();
+    }, [100]);
+
+    /*intercala os jogadores entre X e O*/
     player = player === "X" ? "O" : "X";
     currentPlayer.innerHTML = `JOGADOR DA VEZ: ${player}`;
+}
+
+function check(){
+    let playerLastMove = player === "X" ? "O" : "X";
+
+    const items = selected
+        .map((item, i) => [item, i])
+        .filter((item) => item[0] === playerLastMove)
+        .map((item) => item[1]);
+
+    for (pos of positions){
+        if(pos.every((item) => items.includes(item))){
+            alert("O jogador " + playerLastMove +" GANHOU");
+            init();
+            return;
+        }
+    }
+    if (selected.filter((item) => item).length === 9){
+        alert("DEU EMPATE!");
+        init();
+        return;
+    }
+
 }
 
 
